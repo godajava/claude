@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - claude/sk-hynix-investment-agent-asq90l
     paths:
       - "docs/**"
   workflow_dispatch:
