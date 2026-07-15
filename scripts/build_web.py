@@ -30,12 +30,14 @@ LIVE_WIDGETS = """<section>
   {"symbol":"KRX:000660","width":"100%","locale":"kr","colorTheme":"dark","isTransparent":true}
   </script>
 </div>
-<div class="tradingview-widget-container" style="height:460px">
+<div class="tradingview-widget-container" style="height:760px">
   <div class="tradingview-widget-container__widget" style="height:100%"></div>
   <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-  {"symbol":"KRX:000660","interval":"5","timezone":"Asia/Seoul","theme":"dark","style":"1","locale":"kr","allow_symbol_change":false,"hide_top_toolbar":false,"save_image":false,"width":"100%","height":460}
+  {"symbol":"KRX:000660","interval":"D","timezone":"Asia/Seoul","theme":"dark","style":"1","locale":"kr","allow_symbol_change":false,"hide_top_toolbar":false,"save_image":false,"width":"100%","height":760,
+   "studies":["STD;MACD","STD;Average_True_Range","STD;DMI","STD;Stochastic"]}
   </script>
 </div>
+<p style="font-size:12px;color:var(--muted);margin-top:8px">차트 하단 패널: MACD · ATR · DMI(ADX 포함) · 스토캐스틱(KDJ 유사 지표). 거래량 막대는 가격 차트에 기본 표시. 좌측 상단에서 분봉/일봉 전환 가능.</p>
 </section>
 """
 
