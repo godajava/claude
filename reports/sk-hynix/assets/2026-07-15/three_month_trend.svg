@@ -13,8 +13,8 @@
 <line x1="88" y1="100.0" x2="724" y2="100.0" stroke="#e1e0d9" stroke-width="1"/>
 <text x="80" y="104.0" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">240만</text>
 <line x1="88" y1="336" x2="724" y2="336" stroke="#c3c2b7" stroke-width="1"/>
-<path d="M88.0,289.3 L724.0,167.0" fill="none" stroke="#008300" stroke-width="2" stroke-dasharray="7 5"/>
-<path d="M88.0,314.9 L196.6,298.1 L227.6,238.1 L421.5,187.6 L630.9,176.2 L638.7,115.1 L669.7,152.0 L685.2,156.8 L693.0,158.4 L716.2,247.4 L724.0,229.3" fill="none" stroke="#2a78d6" stroke-width="2"/>
+<path d="M88.0,289.0 L724.0,168.3" fill="none" stroke="#008300" stroke-width="2" stroke-dasharray="7 5"/>
+<path d="M88.0,314.9 L196.6,298.1 L227.6,238.1 L421.5,187.6 L630.9,176.2 L638.7,115.1 L669.7,152.0 L677.5,186.0 L685.2,156.8 L693.0,158.4 L716.2,247.4 L724.0,229.3" fill="none" stroke="#2a78d6" stroke-width="2"/>
 <circle cx="88.0" cy="314.9" r="4.5" fill="#fcfcfb" stroke="#2a78d6" stroke-width="2"/>
 <text x="88.0" y="356" font-size="11" fill="#898781" text-anchor="middle">4/23</text>
 <text x="88.0" y="336.9" font-size="11.5" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">159만</text>
@@ -28,6 +28,7 @@
 <circle cx="638.7" cy="115.1" r="4.5" fill="#fcfcfb" stroke="#2a78d6" stroke-width="2"/>
 <text x="638.7" y="103.1" font-size="11.5" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">234만</text>
 <circle cx="669.7" cy="152.0" r="4.5" fill="#2a78d6" stroke="#2a78d6" stroke-width="2"/>
+<circle cx="677.5" cy="186.0" r="4.5" fill="#2a78d6" stroke="#2a78d6" stroke-width="2"/>
 <circle cx="685.2" cy="156.8" r="4.5" fill="#2a78d6" stroke="#2a78d6" stroke-width="2"/>
 <circle cx="693.0" cy="158.4" r="4.5" fill="#fcfcfb" stroke="#2a78d6" stroke-width="2"/>
 <circle cx="716.2" cy="247.4" r="4.5" fill="#2a78d6" stroke="#2a78d6" stroke-width="2"/>

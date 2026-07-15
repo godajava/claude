@@ -40,9 +40,18 @@ def main():
         })
 
     price = meta.get("regularMarketPrice")
-    prev = meta.get("chartPreviousClose") or meta.get("previousClose")
     if not price or not days:
         sys.exit("오류: 시세 데이터 없음")
+
+    # 전일 종가: 마지막 일봉이 당일(현재가와 같은 날) 봉이면 그 직전 봉의 종가.
+    # meta의 chartPreviousClose는 조회 범위(5d) 직전 종가라 사용하지 않는다.
+    market_date = time.strftime("%Y-%m-%d", time.gmtime(meta.get("regularMarketTime", 0) + 9 * 3600))
+    if len(days) >= 2 and days[-1]["date"] == market_date:
+        prev = days[-2]["close"]
+    elif days[-1]["date"] != market_date:
+        prev = days[-1]["close"]
+    else:
+        prev = None
 
     payload = {
         "symbol": "000660.KS",

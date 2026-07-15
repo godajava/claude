@@ -7,11 +7,12 @@
       {"date": "7/2", "close": 2113000, "derived": true},
       {"date": "7/3", "close": 2343000, "derived": true},
       {"date": "7/7", "close": 2204000},
+      {"date": "7/8", "close": 2076000},
       {"date": "7/9", "close": 2186000},
       {"date": "7/10", "close": 2180000, "derived": true},
       {"date": "7/13", "close": 1845000},
       {"date": "7/14", "close": 1913000},
-      {"date": "7/15", "close": 2066000, "intraday": true}
+      {"date": "7/15", "close": 2093000, "intraday": true}
     ]
   },
   "three_month_trend": {
@@ -26,6 +27,7 @@
       {"date": "7/2", "day": 70, "close": 2113000, "derived": true, "axis": true},
       {"date": "7/3", "day": 71, "close": 2343000, "derived": true},
       {"date": "7/7", "day": 75, "close": 2204000},
+      {"date": "7/8", "day": 76, "close": 2076000},
       {"date": "7/9", "day": 77, "close": 2186000},
       {"date": "7/10", "day": 78, "close": 2180000, "derived": true},
       {"date": "7/13", "day": 81, "close": 1845000},
