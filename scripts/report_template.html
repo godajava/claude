@@ -170,7 +170,7 @@ button.refresh:focus-visible { outline: 2px solid var(--accent); outline-offset:
 
 <div class="stats">
   <div><div class="k">투자의견</div><div class="v rating">매수</div></div>
-  <div><div class="k">현재가 <small>(7/14 종가)</small></div><div class="v">191.3<small>만 원</small></div></div>
+  <div><div class="k">현재가 <small id="live-when">(7/14 종가)</small></div><div class="v"><span id="live-price">191.3</span><small>만 원</small> <span id="live-chg" style="font-size:12.5px;font-weight:700"></span></div></div>
   <div><div class="k">컨센서스 목표가 <small>(37개사)</small></div><div class="v">317.6<small>만 원</small></div></div>
   <div><div class="k">상승여력</div><div class="v rating">+66.0%</div></div>
   <div><div class="k">차기 촉매</div><div class="v" style="font-size:15px">7/29 2Q 실적</div></div>
@@ -181,7 +181,7 @@ button.refresh:focus-visible { outline: 2px solid var(--accent); outline-offset:
   <button class="refresh" type="button" onclick="location.reload()">↻ 새로고침</button>
   <a class="livelink" href="https://finance.naver.com/item/main.naver?code=000660" target="_blank" rel="noopener">네이버 금융 실시간 시세 ↗</a>
   <a class="livelink" href="https://www.tossinvest.com/stocks/A000660/order" target="_blank" rel="noopener">토스증권 ↗</a>
-  <span class="note">리포트는 매일 09:00 KST 자동 갱신 · 새로고침은 최신 발행본을 다시 불러옵니다</span>
+  <span class="note" id="live-note">리포트는 매일 09:00 KST 자동 갱신 · 장중에는 현재가가 10분 간격으로 자동 반영됩니다</span>
 </div>
 
 __LIVE_WIDGETS__
@@ -201,6 +201,19 @@ __LIVE_WIDGETS__
 <div class="chart">__TREND3M__</div>
 <p>3개월 시계열로 보면 1분기 실적 발표일(4/23) 급등을 기점으로 <strong>일평균 약 +0.6만 원의 우상향 추세</strong>가 이어져 왔고, 7월 중순 급락 후에도 주가는 추세선 부근에 머물러 있습니다. 최근 조정이 추세 이탈인지 추세 내 되돌림인지가 관건이며, 7/29 실적 발표가 그 분기점이 될 전망입니다.</p>
 <div class="chart">__PRICE_TREND__</div>
+
+<div class="tablewrap">
+<table>
+  <tr><th colspan="7">전일 상세 시세 — 7/14 (월)</th></tr>
+  <tr><th>시가</th><th>고가</th><th>저가</th><th>종가</th><th>등락</th><th>거래량</th><th>거래대금</th></tr>
+  <tr>
+    <td class="num">확인 불가</td><td class="num">확인 불가</td><td class="num">확인 불가</td>
+    <td class="num">₩1,913,000</td><td class="num" style="color:var(--up)">+3.69%</td>
+    <td class="num">확인 불가</td><td class="num">확인 불가</td>
+  </tr>
+</table>
+</div>
+
 <p>7월 첫 2주는 <strong>업황 호재와 수급 악재가 정면충돌한 구간</strong>입니다. 7/3 급등(+10.9%)으로 234만 원을 찍은 뒤 나스닥 상장을 전후한 차익 실현과 신주 발행 부담으로 7/13 하루에만 −15.4% 급락(184.5만 원)했습니다. 7/14 반등(+3.7%)에 이어 7/15는 바클레이스 리포트발 ADR 급등을 따라 장중 8%대 상승 중입니다.</p>
 </section>
 
@@ -286,3 +299,32 @@ __LIVE_WIDGETS__
 </footer>
 
 </div></div>
+
+<script>
+(function () {
+  // GitHub Pages에서만 동작: quote.yml이 장중 10분 간격으로 갱신하는
+  // 같은 출처의 quote.json을 읽어 헤더 현재가를 갱신한다.
+  // Artifact 페이지에서는 CSP로 fetch가 막혀 조용히 정적 값을 유지한다.
+  async function loadQuote() {
+    try {
+      var r = await fetch("quote.json?ts=" + Date.now(), { cache: "no-store" });
+      if (!r.ok) return;
+      var q = await r.json();
+      var p = document.getElementById("live-price");
+      var c = document.getElementById("live-chg");
+      var w = document.getElementById("live-when");
+      var n = document.getElementById("live-note");
+      if (p && q.price) p.textContent = (q.price / 10000).toFixed(1);
+      if (c && q.changePercent != null) {
+        var up = q.changePercent >= 0;
+        c.textContent = (up ? "▲" : "▼") + Math.abs(q.changePercent).toFixed(2) + "%";
+        c.style.color = up ? "var(--up)" : "var(--down)";
+      }
+      if (w && q.marketTime) w.textContent = "(" + q.marketTime + ")";
+      if (n && q.fetchedAt) n.textContent = "리포트는 매일 09:00 KST 자동 갱신 · 시세 마지막 수집 " + q.fetchedAt;
+    } catch (e) { /* Artifact 등 fetch 불가 환경: 정적 값 유지 */ }
+  }
+  loadQuote();
+  setInterval(loadQuote, 60000);
+})();
+</script>

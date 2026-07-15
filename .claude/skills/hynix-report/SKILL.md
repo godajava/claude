@@ -11,19 +11,20 @@ SK하이닉스(KRX: 000660)의 주가·뉴스·산업 동향을 조사해 차트
 
 1. KST 기준 오늘 날짜를 확인합니다: `TZ=Asia/Seoul date +"%Y-%m-%d (%a)"`
 2. **주가 데이터** — WebSearch(`"SK하이닉스" 주가 마감 YYYY-MM-DD`, "SK하이닉스 시가총액 PER")로 확인합니다: 최근 2주 일별 종가(등락률 보도로 역산 가능하면 역산치로 보충하되 표기), 52주 최고·최저, 시가총액, PER·PBR. (참고: finance.naver.com은 WebFetch가 차단되므로 WebSearch를 사용합니다.)
-3. **뉴스·공시** — WebSearch로 최근 1주일 내 주요 뉴스와 DART 공시를 조사합니다 (실적, 수주, 투자, HBM/DRAM/NAND 관련). 주가 영향력이 큰 순서로 **Top 5**를 선정합니다 (실적·수급·업황 관련 > 단순 홍보성 기사).
-4. **실적** — 최근 3~4개 분기 확정 실적(매출·영업이익·이익률)과 다음 분기 컨센서스를 확인합니다.
-5. **산업 동향** — DRAM/NAND/HBM 가격 추이, HBM 점유율(SK하이닉스·삼성전자·마이크론), 차세대 제품(HBM4 등) 일정을 조사합니다.
-6. **증권사 의견** — WebSearch("SK하이닉스 목표주가")로 최근 증권사별 투자의견·목표주가와 컨센서스를 수집합니다.
-7. **차트 생성** — 조사한 수치로 `reports/sk-hynix/assets/YYYY-MM-DD/data.json`을 작성합니다 (형식은 기존 날짜 폴더의 data.json 참고). `three_month_trend`는 직전 리포트의 data.json에서 앵커 포인트들을 이어받아 최신 종가를 추가하고, 3개월(약 90일)을 넘긴 오래된 앵커는 제거하며 `day` 오프셋을 다시 계산합니다. 그 후 라이트/다크 두 세트를 생성합니다:
+3. **전일 상세 시세(OHLCV)** — GitHub Actions `quote.yml`의 최근 성공 런에서 "Show quote" 스텝 로그를 읽습니다 (github MCP `actions_list`/`get_job_logs`). `days` 배열에 최근 2거래일의 시가/고가/저가/종가/거래량이 있습니다. 최근 런이 오래됐으면 `workflow_dispatch`로 한 번 실행 후 로그를 읽습니다. (이 세션 환경에서는 야후·github.io 접근이 차단되어 `scripts/fetch_quote.py` 직접 실행은 불가.) 실패 시 WebSearch로 보충하고, 못 채운 칸은 "확인 불가"로 둡니다. 거래대금은 근사치(거래량×평균가)로 쓰지 말고 확인된 값만 적습니다.
+4. **뉴스·공시** — WebSearch로 최근 1주일 내 주요 뉴스와 DART 공시를 조사합니다 (실적, 수주, 투자, HBM/DRAM/NAND 관련). 주가 영향력이 큰 순서로 **Top 5**를 선정합니다 (실적·수급·업황 관련 > 단순 홍보성 기사).
+5. **실적** — 최근 3~4개 분기 확정 실적(매출·영업이익·이익률)과 다음 분기 컨센서스를 확인합니다.
+6. **산업 동향** — DRAM/NAND/HBM 가격 추이, HBM 점유율(SK하이닉스·삼성전자·마이크론), 차세대 제품(HBM4 등) 일정을 조사합니다.
+7. **증권사 의견** — WebSearch("SK하이닉스 목표주가")로 최근 증권사별 투자의견·목표주가와 컨센서스를 수집합니다.
+8. **차트 생성** — 조사한 수치로 `reports/sk-hynix/assets/YYYY-MM-DD/data.json`을 작성합니다 (형식은 기존 날짜 폴더의 data.json 참고). `three_month_trend`는 직전 리포트의 data.json에서 앵커 포인트들을 이어받아 최신 종가를 추가하고, 3개월(약 90일)을 넘긴 오래된 앵커는 제거하며 `day` 오프셋을 다시 계산합니다. 그 후 라이트/다크 두 세트를 생성합니다:
    ```
    python3 scripts/hynix_charts.py reports/sk-hynix/assets/YYYY-MM-DD/data.json reports/sk-hynix/assets/YYYY-MM-DD
    python3 scripts/hynix_charts.py reports/sk-hynix/assets/YYYY-MM-DD/data.json reports/sk-hynix/assets/YYYY-MM-DD/dark --dark
    ```
    price_trend / three_month_trend / target_prices / quarterly_earnings / hbm_share 5개 SVG가 세트별로 생성됩니다. 라이트는 마크다운 리포트용, 다크는 웹 페이지(latest.html)용입니다. 확보 못 한 데이터의 차트는 data.json에서 해당 키를 빼면 생성이 생략됩니다.
-8. `reports/sk-hynix/`의 가장 최근 리포트를 읽어 직전 대비 변화(투자 판단 변경 포함)를 파악합니다.
-9. 아래 형식으로 리포트를 작성해 `reports/sk-hynix/YYYY-MM-DD.md`로 저장합니다.
-10. **웹 페이지 빌드·발행** — `scripts/report_template.html`을 오늘 리포트 내용으로 갱신한 뒤(구조·CSS·다크 테마·툴바·`__차트마커__`는 유지, 텍스트만 교체) 빌드합니다:
+9. `reports/sk-hynix/`의 가장 최근 리포트를 읽어 직전 대비 변화(투자 판단 변경 포함)를 파악합니다.
+10. 아래 형식으로 리포트를 작성해 `reports/sk-hynix/YYYY-MM-DD.md`로 저장합니다.
+11. **웹 페이지 빌드·발행** — `scripts/report_template.html`을 오늘 리포트 내용으로 갱신한 뒤(구조·CSS·다크 테마·툴바·`__차트마커__`는 유지, 텍스트만 교체) 빌드합니다:
     ```
     python3 scripts/build_web.py YYYY-MM-DD
     ```
@@ -31,7 +32,7 @@ SK하이닉스(KRX: 000660)의 주가·뉴스·산업 동향을 조사해 차트
     - `docs/index.html` (GitHub Pages용, TradingView 실시간 시세 위젯 포함) → 커밋·푸시하면 `.github/workflows/pages.yml`이 자동 배포합니다. Pages URL: https://godajava.github.io/claude/
     - 고정 URL: https://claude.ai/code/artifact/e9f34125-bb5e-4888-8185-3fc8e3d343fa (다른 세션에서 발행할 때는 이 URL을 Artifact의 `url` 파라미터로 전달)
     - favicon은 📊로 고정, label은 당일 날짜(YYYY-MM-DD)로 지정합니다.
-11. 저장 경로, 아티팩트 URL, 핵심 요약(뉴스 Top 5, 투자 판단 포함)을 사용자에게 보고합니다.
+12. 저장 경로, 아티팩트 URL, 핵심 요약(뉴스 Top 5, 투자 판단 포함)을 사용자에게 보고합니다.
 
 ## 리포트 형식 (애널리스트 스타일)
 
@@ -48,7 +49,7 @@ SK하이닉스(KRX: 000660)의 주가·뉴스·산업 동향을 조사해 차트
 > 작성 시점 + 면책 한 줄
 
 ## 1. 투자 요약 (Investment Summary)   ← 불릿 3~4개 + 핵심 지표 테이블
-## 2. 주가 동향                        ← price_trend.svg + 해설 + 일별 종가 표
+## 2. 주가 동향                        ← three_month_trend.svg + price_trend.svg + 전일 상세 시세 표(시가/고가/저가/종가/등락/거래량) + 해설 + 일별 종가 표
 ## 3. 최신 뉴스 Top 5                  ← 중요도순, 각 항목 🟢호재/🔴악재/⚪중립 태그 + 출처 링크
 ## 4. 실적 분석                        ← quarterly_earnings.svg + 해설
 ## 5. 산업 동향 — HBM 경쟁 구도        ← hbm_share.svg + 가격/수요/경쟁/차세대 불릿
