@@ -26,7 +26,9 @@ jobs:
         with:
           ref: main
       - name: Fetch quote
-        run: python3 scripts/fetch_quote.py docs/quote.json
+        run: python3 scripts/fetch_quote.py docs/quote.json /tmp/history.json
+      - name: Generate tech charts
+        run: python3 scripts/tech_charts.py /tmp/history.json docs/charts
       - name: Show quote (for report backfill)
         run: cat docs/quote.json
       - uses: actions/configure-pages@v5

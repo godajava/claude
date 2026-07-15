@@ -106,6 +106,7 @@ def compute_indicators(days):
 
 def main():
     out = sys.argv[1] if len(sys.argv) > 1 else "docs/quote.json"
+    history_out = sys.argv[2] if len(sys.argv) > 2 else None
     req = urllib.request.Request(URL, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=20) as r:
         data = json.load(r)
@@ -153,6 +154,9 @@ def main():
     }
     with open(out, "w") as f:
         json.dump(payload, f, ensure_ascii=False, indent=1)
+    if history_out:
+        with open(history_out, "w") as f:
+            json.dump(days, f)
     print(f"저장: {out} — 현재가 {price:,.0f} ({payload['changePercent']}%), 일봉 {len(days)}개")
 
 

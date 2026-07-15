@@ -184,7 +184,10 @@ button.refresh:focus-visible { outline: 2px solid var(--accent); outline-offset:
   <span class="note" id="live-note">리포트는 매일 09:00 KST 자동 갱신 · 장중에는 현재가가 10분 간격으로 자동 반영됩니다</span>
 </div>
 
-__LIVE_WIDGETS__
+<section>
+<h2><span class="no">CHART</span>기술적 분석 차트 <small style="font-size:12px;font-weight:500;color:var(--muted)">장중 10분 간격 자동 갱신 · 장 마감 후 확정 봉 반영</small></h2>
+__TECH_CHARTS__
+</section>
 
 <section>
 <h2><span class="no">01</span>투자 요약</h2>
@@ -354,6 +357,15 @@ __LIVE_WIDGETS__
         set("ti-vol-read", ind.volume.read);
       }
       if (q.marketTime) set("ti-when", "· " + q.marketTime + " 기준");
+
+      // 기술 차트 이미지 새로고침 (Pages 버전에서만 존재)
+      if (!loadQuote.chartBusted) {
+        loadQuote.chartBusted = true;
+      } else {
+        document.querySelectorAll("img.tech").forEach(function (im) {
+          im.src = im.src.split("?")[0] + "?t=" + Date.now();
+        });
+      }
     } catch (e) { /* Artifact 등 fetch 불가 환경: 정적 값 유지 */ }
   }
   loadQuote();

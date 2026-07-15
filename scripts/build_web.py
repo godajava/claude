@@ -5,9 +5,10 @@
     python3 scripts/build_web.py <YYYY-MM-DD>
 
 scripts/report_template.html에 당일 다크 차트 SVG를 인라인하고 두 버전을 생성한다:
-  - reports/sk-hynix/latest.html  : Claude Artifact용 (CSP가 외부 스크립트를
-    차단하므로 TradingView 위젯 제외)
-  - docs/index.html               : GitHub Pages용 (TradingView 실시간 위젯 포함)
+  - reports/sk-hynix/latest.html  : Claude Artifact용 (기술 차트를 인라인 —
+    발행 시점 스냅샷)
+  - docs/index.html               : GitHub Pages용 (기술 차트를 <img>로 참조 —
+    quote.yml/charts.yml이 배포할 때마다 자동 최신화)
 """
 import sys
 import os
@@ -20,24 +21,8 @@ MARKERS = {
     "__TARGETS__": "target_prices.svg",
 }
 
-# TradingView 임베드 위젯 (다크 테마, KRX:000660).
-# 데이터는 거래소 정책에 따라 실시간 또는 수분 지연으로 제공된다.
-LIVE_WIDGETS = """<section>
-<h2><span class="no">LIVE</span>실시간 시세 <small style="font-size:12px;font-weight:500;color:var(--muted)">TradingView 제공 · 거래소 정책에 따라 수분 지연될 수 있음</small></h2>
-<div class="tradingview-widget-container" style="margin-bottom:14px">
-  <div class="tradingview-widget-container__widget"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-info.js" async>
-  {"symbol":"KRX:000660","width":"100%","locale":"kr","colorTheme":"dark","isTransparent":true}
-  </script>
-</div>
-<div class="tradingview-widget-container" style="height:760px">
-  <div class="tradingview-widget-container__widget" style="height:100%"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-  {"symbol":"KRX:000660","interval":"D","timezone":"Asia/Seoul","theme":"dark","style":"1","locale":"kr","allow_symbol_change":false,"hide_top_toolbar":false,"save_image":false,"width":"100%","height":760,
-   "studies":["STD;MACD","STD;Average_True_Range","STD;DMI","STD;Stochastic"]}
-  </script>
-</div>
-<p style="font-size:12px;color:var(--muted);margin-top:8px">차트 하단 패널: MACD · ATR · DMI(ADX 포함) · 스토캐스틱(KDJ 유사 지표). 거래량 막대는 가격 차트에 기본 표시. 좌측 상단에서 분봉/일봉 전환 가능.</p>
+# 기술 차트 (tech_charts.py 생성, docs/charts/에 커밋·배포됨)
+TECH_CHARTS = ["candle_volume", "macd", "kdj", "adx_atr", "atr"]
 </section>
 """
 
@@ -52,12 +37,23 @@ def build(date):
                 sys.exit(f"오류: {path} 없음 — 먼저 hynix_charts.py --dark 실행 필요")
             tpl = tpl.replace(marker, open(path).read())
 
-    artifact = tpl.replace("__LIVE_WIDGETS__", "")
+    # 아티팩트: 커밋된 SVG를 인라인 (발행 시점 스냅샷)
+    inline_parts = []
+    for name in TECH_CHARTS:
+        path = f"docs/charts/{name}.svg"
+        if os.path.exists(path):
+            inline_parts.append(f'<div class="chart">{open(path).read()}</div>')
+    inline = "\n".join(inline_parts) if inline_parts else \
+        '<p style="color:var(--muted)">차트 준비 중 — 다음 장중 갱신 때 표시됩니다.</p>'
+    artifact = tpl.replace("__TECH_CHARTS__", inline)
     open("reports/sk-hynix/latest.html", "w").write(artifact)
-    print(f"생성: reports/sk-hynix/latest.html ({len(artifact):,} bytes, 위젯 제외)")
+    print(f"생성: reports/sk-hynix/latest.html ({len(artifact):,} bytes, 기술차트 {len(inline_parts)}개 인라인)")
 
     os.makedirs("docs", exist_ok=True)
-    pages = tpl.replace("__LIVE_WIDGETS__", LIVE_WIDGETS)
+    imgs = "\n".join(
+        f'<div class="chart"><img class="tech" src="charts/{name}.svg" alt="{name}" '
+        f'style="display:block;width:100%"></div>' for name in TECH_CHARTS)
+    pages = tpl.replace("__TECH_CHARTS__", imgs)
     open("docs/index.html", "w").write(
         "<!doctype html><html lang=\"ko\"><head><meta charset=\"utf-8\">"
         "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
