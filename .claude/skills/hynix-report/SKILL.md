@@ -15,14 +15,15 @@ SK하이닉스(KRX: 000660)의 주가·뉴스·산업 동향을 조사해 차트
 4. **실적** — 최근 3~4개 분기 확정 실적(매출·영업이익·이익률)과 다음 분기 컨센서스를 확인합니다.
 5. **산업 동향** — DRAM/NAND/HBM 가격 추이, HBM 점유율(SK하이닉스·삼성전자·마이크론), 차세대 제품(HBM4 등) 일정을 조사합니다.
 6. **증권사 의견** — WebSearch("SK하이닉스 목표주가")로 최근 증권사별 투자의견·목표주가와 컨센서스를 수집합니다.
-7. **차트 생성** — 조사한 수치로 `reports/sk-hynix/assets/YYYY-MM-DD/data.json`을 작성하고 (형식은 기존 날짜 폴더의 data.json 참고) 다음을 실행합니다:
+7. **차트 생성** — 조사한 수치로 `reports/sk-hynix/assets/YYYY-MM-DD/data.json`을 작성합니다 (형식은 기존 날짜 폴더의 data.json 참고). `three_month_trend`는 직전 리포트의 data.json에서 앵커 포인트들을 이어받아 최신 종가를 추가하고, 3개월(약 90일)을 넘긴 오래된 앵커는 제거하며 `day` 오프셋을 다시 계산합니다. 그 후 라이트/다크 두 세트를 생성합니다:
    ```
    python3 scripts/hynix_charts.py reports/sk-hynix/assets/YYYY-MM-DD/data.json reports/sk-hynix/assets/YYYY-MM-DD
+   python3 scripts/hynix_charts.py reports/sk-hynix/assets/YYYY-MM-DD/data.json reports/sk-hynix/assets/YYYY-MM-DD/dark --dark
    ```
-   price_trend / target_prices / quarterly_earnings / hbm_share 4개 SVG가 생성됩니다. 확보 못 한 데이터의 차트는 data.json에서 해당 키를 빼면 생성이 생략됩니다.
+   price_trend / three_month_trend / target_prices / quarterly_earnings / hbm_share 5개 SVG가 세트별로 생성됩니다. 라이트는 마크다운 리포트용, 다크는 웹 페이지(latest.html)용입니다. 확보 못 한 데이터의 차트는 data.json에서 해당 키를 빼면 생성이 생략됩니다.
 8. `reports/sk-hynix/`의 가장 최근 리포트를 읽어 직전 대비 변화(투자 판단 변경 포함)를 파악합니다.
 9. 아래 형식으로 리포트를 작성해 `reports/sk-hynix/YYYY-MM-DD.md`로 저장합니다.
-10. **웹 발행(Artifact)** — `reports/sk-hynix/latest.html`을 오늘 리포트 내용으로 갱신합니다 (기존 파일의 구조·CSS는 유지하고 텍스트와 인라인 SVG만 교체. SVG 교체는 `python3`으로 당일 assets의 SVG 파일 내용을 치환). 갱신 후 Artifact 도구로 **같은 파일 경로**를 재발행하면 고정 URL이 유지됩니다.
+10. **웹 발행(Artifact)** — `reports/sk-hynix/latest.html`을 오늘 리포트 내용으로 갱신합니다 (기존 파일의 구조·CSS·다크 테마·툴바는 유지하고 텍스트와 인라인 SVG만 교체. SVG는 당일 `assets/YYYY-MM-DD/dark/`의 **다크 세트**를 `python3`으로 치환). 갱신 후 Artifact 도구로 **같은 파일 경로**를 재발행하면 고정 URL이 유지됩니다.
     - 고정 URL: https://claude.ai/code/artifact/e9f34125-bb5e-4888-8185-3fc8e3d343fa (다른 세션에서 발행할 때는 이 URL을 Artifact의 `url` 파라미터로 전달)
     - favicon은 📊로 고정, label은 당일 날짜(YYYY-MM-DD)로 지정합니다.
 11. 저장 경로, 아티팩트 URL, 핵심 요약(뉴스 Top 5, 투자 판단 포함)을 사용자에게 보고합니다.

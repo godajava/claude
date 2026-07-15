@@ -1,36 +1,22 @@
 <title>SK하이닉스 투자 리포트</title>
 <style>
+/* 다크 전용 테마 (사용자 지정) — 아티팩트 테마 토글과 무관하게 다크 유지 */
 :root {
-  --bg: #f2f1ec;
-  --paper: #fdfcfa;
-  --ink: #1d1e20;
-  --ink-2: #4d4e52;
-  --muted: #85847e;
-  --hairline: #e2e0d8;
-  --hairline-strong: #c9c7bf;
-  --accent: #1f5fae;
-  --up: #c73a35;
-  --up-bg: rgba(199,58,53,0.08);
-  --down: #2a6fc0;
-  --down-bg: rgba(42,111,192,0.08);
-  --neutral-bg: rgba(133,132,126,0.12);
-  --chart-card: #fcfcfb;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #131417; --paper: #1b1d21; --ink: #e9e7e2; --ink-2: #b8b7b2;
-    --muted: #8e8d90; --hairline: #2d2f34; --hairline-strong: #43454b;
-    --accent: #74a9e8; --up: #e0716b; --up-bg: rgba(224,113,107,0.13);
-    --down: #6ea3e2; --down-bg: rgba(110,163,226,0.13);
-    --neutral-bg: rgba(142,141,144,0.16);
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #131417; --paper: #1b1d21; --ink: #e9e7e2; --ink-2: #b8b7b2;
-  --muted: #8e8d90; --hairline: #2d2f34; --hairline-strong: #43454b;
-  --accent: #74a9e8; --up: #e0716b; --up-bg: rgba(224,113,107,0.13);
-  --down: #6ea3e2; --down-bg: rgba(110,163,226,0.13);
+  color-scheme: dark;
+  --bg: #101114;
+  --paper: #1a1c20;
+  --ink: #e9e7e2;
+  --ink-2: #b8b7b2;
+  --muted: #8e8d90;
+  --hairline: #2d2f34;
+  --hairline-strong: #43454b;
+  --accent: #74a9e8;
+  --up: #e0716b;
+  --up-bg: rgba(224,113,107,0.13);
+  --down: #6ea3e2;
+  --down-bg: rgba(110,163,226,0.13);
   --neutral-bg: rgba(142,141,144,0.16);
+  --chart-card: #1a1a19;
 }
 body {
   background: var(--bg); color: var(--ink);
@@ -94,11 +80,12 @@ a { color: var(--accent); text-decoration: none; }
 a:hover, a:focus-visible { text-decoration: underline; }
 a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* ── 차트 카드 (양 테마 공통: 지면 인쇄 느낌의 밝은 카드) ── */
+/* ── 차트 카드 ── */
 .chart {
   background: var(--chart-card); border: 1px solid var(--hairline-strong);
   padding: 6px; margin: 18px 0; overflow-x: auto;
 }
+.chart + .chart { margin-top: 14px; }
 .chart svg { display: block; max-width: 100%; height: auto; }
 
 /* ── 테이블 ── */
@@ -146,6 +133,29 @@ footer {
   margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--hairline-strong);
   font-size: 12px; color: var(--muted); line-height: 1.8;
 }
+
+/* ── 툴바 (새로고침·실시간 시세) ── */
+.toolbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  margin: 0 0 26px; padding: 12px 14px;
+  border: 1px solid var(--hairline); background: rgba(116,169,232,0.05);
+}
+.toolbar .note { font-size: 12px; color: var(--muted); margin-left: auto; }
+button.refresh {
+  font: inherit; font-size: 13px; font-weight: 700; color: var(--accent);
+  background: none; border: 1px solid var(--accent); border-radius: 3px;
+  padding: 6px 14px; cursor: pointer;
+}
+button.refresh:hover { background: rgba(116,169,232,0.12); }
+button.refresh:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.livelink {
+  font-size: 12.5px; font-weight: 600; padding: 6px 12px;
+  border: 1px solid var(--hairline-strong); border-radius: 3px; color: var(--ink-2);
+}
+.livelink:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+@media (prefers-reduced-motion: no-preference) {
+  button.refresh:active { transform: scale(0.97); }
+}
 </style>
 
 <div class="sheet"><div class="paper">
@@ -167,6 +177,13 @@ footer {
 </div>
 <p class="asof">작성 2026-07-15 10:15 KST · 수치는 조사 시점 기준 · 본 자료는 정보 제공 목적이며 투자 권유가 아닙니다</p>
 
+<div class="toolbar">
+  <button class="refresh" type="button" onclick="location.reload()">↻ 새로고침</button>
+  <a class="livelink" href="https://finance.naver.com/item/main.naver?code=000660" target="_blank" rel="noopener">네이버 금융 실시간 시세 ↗</a>
+  <a class="livelink" href="https://www.tossinvest.com/stocks/A000660/order" target="_blank" rel="noopener">토스증권 ↗</a>
+  <span class="note">리포트는 매일 09:00 KST 자동 갱신 · 새로고침은 최신 발행본을 다시 불러옵니다</span>
+</div>
+
 <section>
 <h2><span class="no">01</span>투자 요약</h2>
 <ul>
@@ -180,49 +197,92 @@ footer {
 <section>
 <h2><span class="no">02</span>주가 동향</h2>
 <div class="chart"><svg xmlns="http://www.w3.org/2000/svg" width="760" height="400" viewBox="0 0 760 400" font-family='system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif'>
-<rect width="760" height="400" fill="#fcfcfb" stroke="rgba(11,11,11,0.10)"/>
-<text x="24" y="34" font-size="17" font-weight="700" fill="#0b0b0b">SK하이닉스 주가 흐름 (7/2 ~ 7/15)</text>
-<text x="24" y="54" font-size="12" fill="#52514e">종가 기준, 원. 흰 마커는 등락률 기사 기반 역산치, 점선은 7/15 장중.</text>
-<line x1="88" y1="331.8" x2="724" y2="331.8" stroke="#e1e0d9" stroke-width="1"/>
+<rect width="760" height="400" fill="#1a1a19" stroke="rgba(11,11,11,0.10)"/>
+<text x="24" y="34" font-size="17" font-weight="700" fill="#ffffff">3개월 주가 추세 (4/23 ~ 7/14)</text>
+<text x="24" y="54" font-size="12" fill="#c3c2b7">보도 확인 종가 앵커 기준, 원. 흰 마커는 역산치. 점선은 선형 추세선.</text>
+<line x1="88" y1="312.5" x2="724" y2="312.5" stroke="#2c2c2a" stroke-width="1"/>
+<text x="80" y="316.5" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">160만</text>
+<line x1="88" y1="259.4" x2="724" y2="259.4" stroke="#2c2c2a" stroke-width="1"/>
+<text x="80" y="263.4" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">180만</text>
+<line x1="88" y1="206.2" x2="724" y2="206.2" stroke="#2c2c2a" stroke-width="1"/>
+<text x="80" y="210.2" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">200만</text>
+<line x1="88" y1="153.1" x2="724" y2="153.1" stroke="#2c2c2a" stroke-width="1"/>
+<text x="80" y="157.1" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">220만</text>
+<line x1="88" y1="100.0" x2="724" y2="100.0" stroke="#2c2c2a" stroke-width="1"/>
+<text x="80" y="104.0" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">240만</text>
+<line x1="88" y1="336" x2="724" y2="336" stroke="#383835" stroke-width="1"/>
+<path d="M88.0,289.3 L724.0,167.0" fill="none" stroke="#008300" stroke-width="2" stroke-dasharray="7 5"/>
+<path d="M88.0,314.9 L196.6,298.1 L227.6,238.1 L421.5,187.6 L630.9,176.2 L638.7,115.1 L669.7,152.0 L685.2,156.8 L693.0,158.4 L716.2,247.4 L724.0,229.3" fill="none" stroke="#3987e5" stroke-width="2"/>
+<circle cx="88.0" cy="314.9" r="4.5" fill="#1a1a19" stroke="#3987e5" stroke-width="2"/>
+<text x="88.0" y="356" font-size="11" fill="#898781" text-anchor="middle">4/23</text>
+<text x="88.0" y="336.9" font-size="11.5" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">159만</text>
+<circle cx="196.6" cy="298.1" r="4.5" fill="#3987e5" stroke="#3987e5" stroke-width="2"/>
+<text x="196.6" y="356" font-size="11" fill="#898781" text-anchor="middle">5/7</text>
+<circle cx="227.6" cy="238.1" r="4.5" fill="#3987e5" stroke="#3987e5" stroke-width="2"/>
+<circle cx="421.5" cy="187.6" r="4.5" fill="#3987e5" stroke="#3987e5" stroke-width="2"/>
+<text x="421.5" y="356" font-size="11" fill="#898781" text-anchor="middle">6/5</text>
+<circle cx="630.9" cy="176.2" r="4.5" fill="#1a1a19" stroke="#3987e5" stroke-width="2"/>
+<text x="630.9" y="356" font-size="11" fill="#898781" text-anchor="middle">7/2</text>
+<circle cx="638.7" cy="115.1" r="4.5" fill="#1a1a19" stroke="#3987e5" stroke-width="2"/>
+<text x="638.7" y="103.1" font-size="11.5" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">234만</text>
+<circle cx="669.7" cy="152.0" r="4.5" fill="#3987e5" stroke="#3987e5" stroke-width="2"/>
+<circle cx="685.2" cy="156.8" r="4.5" fill="#3987e5" stroke="#3987e5" stroke-width="2"/>
+<circle cx="693.0" cy="158.4" r="4.5" fill="#1a1a19" stroke="#3987e5" stroke-width="2"/>
+<circle cx="716.2" cy="247.4" r="4.5" fill="#3987e5" stroke="#3987e5" stroke-width="2"/>
+<circle cx="724.0" cy="229.3" r="4.5" fill="#3987e5" stroke="#3987e5" stroke-width="2"/>
+<text x="724.0" y="356" font-size="11" fill="#898781" text-anchor="middle">7/14</text>
+<text x="724.0" y="217.3" font-size="11.5" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">191만</text>
+<line x1="424" y1="66" x2="446" y2="66" stroke="#3987e5" stroke-width="2"/>
+<text x="452" y="70" font-size="11" fill="#c3c2b7">종가(앵커)</text>
+<line x1="524" y1="66" x2="546" y2="66" stroke="#008300" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="552" y="70" font-size="11" fill="#c3c2b7">추세선 기울기: 일 +0.6만 원</text>
+<text x="24" y="386" font-size="10.5" fill="#898781">출처: TradersUnion(4/23)·Investing(5/7)·토큰포스트(5/11)·파이낸셜투데이(6/5)·7월 보도 종합</text>
+</svg></div>
+<p>3개월 시계열로 보면 1분기 실적 발표일(4/23) 급등을 기점으로 <strong>일평균 약 +0.6만 원의 우상향 추세</strong>가 이어져 왔고, 7월 중순 급락 후에도 주가는 추세선 부근에 머물러 있습니다. 최근 조정이 추세 이탈인지 추세 내 되돌림인지가 관건이며, 7/29 실적 발표가 그 분기점이 될 전망입니다.</p>
+<div class="chart"><svg xmlns="http://www.w3.org/2000/svg" width="760" height="400" viewBox="0 0 760 400" font-family='system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif'>
+<rect width="760" height="400" fill="#1a1a19" stroke="rgba(11,11,11,0.10)"/>
+<text x="24" y="34" font-size="17" font-weight="700" fill="#ffffff">SK하이닉스 주가 흐름 (7/2 ~ 7/15)</text>
+<text x="24" y="54" font-size="12" fill="#c3c2b7">종가 기준, 원. 흰 마커는 등락률 기사 기반 역산치, 점선은 7/15 장중.</text>
+<line x1="88" y1="331.8" x2="724" y2="331.8" stroke="#2c2c2a" stroke-width="1"/>
 <text x="80" y="335.8" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">180만</text>
-<line x1="88" y1="291.4" x2="724" y2="291.4" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="88" y1="291.4" x2="724" y2="291.4" stroke="#2c2c2a" stroke-width="1"/>
 <text x="80" y="295.4" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">190만</text>
-<line x1="88" y1="251.0" x2="724" y2="251.0" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="88" y1="251.0" x2="724" y2="251.0" stroke="#2c2c2a" stroke-width="1"/>
 <text x="80" y="255.0" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">200만</text>
-<line x1="88" y1="210.6" x2="724" y2="210.6" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="88" y1="210.6" x2="724" y2="210.6" stroke="#2c2c2a" stroke-width="1"/>
 <text x="80" y="214.6" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">210만</text>
-<line x1="88" y1="170.2" x2="724" y2="170.2" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="88" y1="170.2" x2="724" y2="170.2" stroke="#2c2c2a" stroke-width="1"/>
 <text x="80" y="174.2" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">220만</text>
-<line x1="88" y1="129.8" x2="724" y2="129.8" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="88" y1="129.8" x2="724" y2="129.8" stroke="#2c2c2a" stroke-width="1"/>
 <text x="80" y="133.8" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">230만</text>
-<line x1="88" y1="89.4" x2="724" y2="89.4" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="88" y1="89.4" x2="724" y2="89.4" stroke="#2c2c2a" stroke-width="1"/>
 <text x="80" y="93.4" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">240만</text>
-<line x1="88" y1="336" x2="724" y2="336" stroke="#c3c2b7" stroke-width="1"/>
-<path d="M88.0,205.3 L178.9,112.4 L269.7,168.6 L360.6,175.8 L451.4,178.3 L542.3,313.6 L633.1,286.2" fill="none" stroke="#2a78d6" stroke-width="2"/>
-<path d="M633.1,286.2 L724.0,224.3" fill="none" stroke="#2a78d6" stroke-width="2" stroke-dasharray="5 4"/>
-<circle cx="88.0" cy="205.3" r="4.5" fill="#fcfcfb" stroke="#2a78d6" stroke-width="2"/>
+<line x1="88" y1="336" x2="724" y2="336" stroke="#383835" stroke-width="1"/>
+<path d="M88.0,205.3 L178.9,112.4 L269.7,168.6 L360.6,175.8 L451.4,178.3 L542.3,313.6 L633.1,286.2" fill="none" stroke="#3987e5" stroke-width="2"/>
+<path d="M633.1,286.2 L724.0,224.3" fill="none" stroke="#3987e5" stroke-width="2" stroke-dasharray="5 4"/>
+<circle cx="88.0" cy="205.3" r="4.5" fill="#1a1a19" stroke="#3987e5" stroke-width="2"/>
 <text x="88.0" y="356" font-size="11" fill="#898781" text-anchor="middle">7/2</text>
-<circle cx="178.9" cy="112.4" r="4.5" fill="#fcfcfb" stroke="#2a78d6" stroke-width="2"/>
+<circle cx="178.9" cy="112.4" r="4.5" fill="#1a1a19" stroke="#3987e5" stroke-width="2"/>
 <text x="178.9" y="356" font-size="11" fill="#898781" text-anchor="middle">7/3</text>
-<text x="178.9" y="100.4" font-size="11.5" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">234만</text>
-<circle cx="269.7" cy="168.6" r="4.5" fill="#2a78d6" stroke="#2a78d6" stroke-width="2"/>
+<text x="178.9" y="100.4" font-size="11.5" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">234만</text>
+<circle cx="269.7" cy="168.6" r="4.5" fill="#3987e5" stroke="#3987e5" stroke-width="2"/>
 <text x="269.7" y="356" font-size="11" fill="#898781" text-anchor="middle">7/7</text>
-<circle cx="360.6" cy="175.8" r="4.5" fill="#2a78d6" stroke="#2a78d6" stroke-width="2"/>
+<circle cx="360.6" cy="175.8" r="4.5" fill="#3987e5" stroke="#3987e5" stroke-width="2"/>
 <text x="360.6" y="356" font-size="11" fill="#898781" text-anchor="middle">7/9</text>
-<circle cx="451.4" cy="178.3" r="4.5" fill="#fcfcfb" stroke="#2a78d6" stroke-width="2"/>
+<circle cx="451.4" cy="178.3" r="4.5" fill="#1a1a19" stroke="#3987e5" stroke-width="2"/>
 <text x="451.4" y="356" font-size="11" fill="#898781" text-anchor="middle">7/10</text>
-<circle cx="542.3" cy="313.6" r="4.5" fill="#2a78d6" stroke="#2a78d6" stroke-width="2"/>
+<circle cx="542.3" cy="313.6" r="4.5" fill="#3987e5" stroke="#3987e5" stroke-width="2"/>
 <text x="542.3" y="356" font-size="11" fill="#898781" text-anchor="middle">7/13</text>
-<text x="542.3" y="335.6" font-size="11.5" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">184만</text>
-<circle cx="633.1" cy="286.2" r="4.5" fill="#2a78d6" stroke="#2a78d6" stroke-width="2"/>
+<text x="542.3" y="335.6" font-size="11.5" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">184만</text>
+<circle cx="633.1" cy="286.2" r="4.5" fill="#3987e5" stroke="#3987e5" stroke-width="2"/>
 <text x="633.1" y="356" font-size="11" fill="#898781" text-anchor="middle">7/14</text>
-<circle cx="724.0" cy="224.3" r="4.5" fill="#fcfcfb" stroke="#2a78d6" stroke-width="2"/>
+<circle cx="724.0" cy="224.3" r="4.5" fill="#1a1a19" stroke="#3987e5" stroke-width="2"/>
 <text x="724.0" y="356" font-size="11" fill="#898781" text-anchor="middle">7/15</text>
-<text x="724.0" y="212.3" font-size="11.5" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">207만</text>
-<circle cx="484" cy="66" r="4.5" fill="#2a78d6" stroke="#2a78d6" stroke-width="2"/>
-<text x="494" y="70" font-size="11" fill="#52514e">확인 종가</text>
-<circle cx="564" cy="66" r="4.5" fill="#fcfcfb" stroke="#2a78d6" stroke-width="2"/>
-<text x="574" y="70" font-size="11" fill="#52514e">역산·장중(점선)</text>
+<text x="724.0" y="212.3" font-size="11.5" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">207만</text>
+<circle cx="484" cy="66" r="4.5" fill="#3987e5" stroke="#3987e5" stroke-width="2"/>
+<text x="494" y="70" font-size="11" fill="#c3c2b7">확인 종가</text>
+<circle cx="564" cy="66" r="4.5" fill="#1a1a19" stroke="#3987e5" stroke-width="2"/>
+<text x="574" y="70" font-size="11" fill="#c3c2b7">역산·장중(점선)</text>
 <text x="24" y="386" font-size="10.5" fill="#898781">출처: 아주경제·머니투데이·톱스타뉴스·서울경제 보도 종합 (2026-07-15 조사)</text>
 </svg></div>
 <p>7월 첫 2주는 <strong>업황 호재와 수급 악재가 정면충돌한 구간</strong>입니다. 7/3 급등(+10.9%)으로 234만 원을 찍은 뒤 나스닥 상장을 전후한 차익 실현과 신주 발행 부담으로 7/13 하루에만 −15.4% 급락(184.5만 원)했습니다. 7/14 반등(+3.7%)에 이어 7/15는 바클레이스 리포트발 ADR 급등을 따라 장중 8%대 상승 중입니다.</p>
@@ -257,50 +317,50 @@ footer {
 <section>
 <h2><span class="no">04</span>실적 분석</h2>
 <div class="chart"><svg xmlns="http://www.w3.org/2000/svg" width="760" height="420" viewBox="0 0 760 420" font-family='system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif'>
-<rect width="760" height="420" fill="#fcfcfb" stroke="rgba(11,11,11,0.10)"/>
-<text x="24" y="34" font-size="17" font-weight="700" fill="#0b0b0b">분기 실적 추이</text>
-<text x="24" y="54" font-size="12" fill="#52514e">매출·영업이익, 조 원. 26.2Q는 증권가 컨센서스 전망치.</text>
-<line x1="64" y1="340.0" x2="724" y2="340.0" stroke="#e1e0d9" stroke-width="1"/>
+<rect width="760" height="420" fill="#1a1a19" stroke="rgba(11,11,11,0.10)"/>
+<text x="24" y="34" font-size="17" font-weight="700" fill="#ffffff">분기 실적 추이</text>
+<text x="24" y="54" font-size="12" fill="#c3c2b7">매출·영업이익, 조 원. 26.2Q는 증권가 컨센서스 전망치.</text>
+<line x1="64" y1="340.0" x2="724" y2="340.0" stroke="#2c2c2a" stroke-width="1"/>
 <text x="56" y="344.0" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">0조</text>
-<line x1="64" y1="288.5" x2="724" y2="288.5" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="64" y1="288.5" x2="724" y2="288.5" stroke="#2c2c2a" stroke-width="1"/>
 <text x="56" y="292.5" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">20조</text>
-<line x1="64" y1="237.0" x2="724" y2="237.0" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="64" y1="237.0" x2="724" y2="237.0" stroke="#2c2c2a" stroke-width="1"/>
 <text x="56" y="241.0" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">40조</text>
-<line x1="64" y1="185.5" x2="724" y2="185.5" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="64" y1="185.5" x2="724" y2="185.5" stroke="#2c2c2a" stroke-width="1"/>
 <text x="56" y="189.5" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">60조</text>
-<line x1="64" y1="134.0" x2="724" y2="134.0" stroke="#e1e0d9" stroke-width="1"/>
+<line x1="64" y1="134.0" x2="724" y2="134.0" stroke="#2c2c2a" stroke-width="1"/>
 <text x="56" y="138.0" font-size="11" fill="#898781" text-anchor="end" style="font-variant-numeric:tabular-nums">80조</text>
-<path d="M89.5,339.99999999999994 v-58.83350219520431 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v58.83350219520431 z" fill="#2a78d6" />
-<text x="117.5" y="270.2" font-size="11" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">24.4</text>
+<path d="M89.5,339.99999999999994 v-58.83350219520431 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v58.83350219520431 z" fill="#3987e5" />
+<text x="117.5" y="270.2" font-size="11" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">24.4</text>
 <path d="M147.5,340.00000000000006 v-25.356636271529883 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v25.356636271529883 z" fill="#008300" />
-<text x="175.5" y="303.6" font-size="11" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">11.4</text>
-<text x="146.5" y="362" font-size="12" fill="#0b0b0b" text-anchor="middle">25.3Q</text>
+<text x="175.5" y="303.6" font-size="11" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">11.4</text>
+<text x="146.5" y="362" font-size="12" fill="#ffffff" text-anchor="middle">25.3Q</text>
 <text x="146.5" y="380" font-size="11" fill="#898781" text-anchor="middle">이익률 47%</text>
-<path d="M254.5,340.0 v-80.46470786896317 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v80.46470786896317 z" fill="#2a78d6" />
-<text x="282.5" y="248.5" font-size="11" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">32.8</text>
+<path d="M254.5,340.0 v-80.46470786896317 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v80.46470786896317 z" fill="#3987e5" />
+<text x="282.5" y="248.5" font-size="11" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">32.8</text>
 <path d="M312.5,340.0 v-45.442755825734544 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v45.442755825734544 z" fill="#008300" />
-<text x="340.5" y="283.6" font-size="11" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">19.2</text>
-<text x="311.5" y="362" font-size="12" fill="#0b0b0b" text-anchor="middle">25.4Q</text>
+<text x="340.5" y="283.6" font-size="11" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">19.2</text>
+<text x="311.5" y="362" font-size="12" fill="#ffffff" text-anchor="middle">25.4Q</text>
 <text x="311.5" y="380" font-size="11" fill="#898781" text-anchor="middle">이익률 58%</text>
-<path d="M419.5,340.0 v-131.45254981425194 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v131.45254981425194 z" fill="#2a78d6" />
-<text x="447.5" y="197.5" font-size="11" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">52.6</text>
+<path d="M419.5,340.0 v-131.45254981425194 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v131.45254981425194 z" fill="#3987e5" />
+<text x="447.5" y="197.5" font-size="11" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">52.6</text>
 <path d="M477.5,340.0 v-92.82539682539681 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v92.82539682539681 z" fill="#008300" />
-<text x="505.5" y="236.2" font-size="11" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">37.6</text>
-<text x="476.5" y="362" font-size="12" fill="#0b0b0b" text-anchor="middle">26.1Q</text>
+<text x="505.5" y="236.2" font-size="11" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">37.6</text>
+<text x="476.5" y="362" font-size="12" fill="#ffffff" text-anchor="middle">26.1Q</text>
 <text x="476.5" y="380" font-size="11" fill="#898781" text-anchor="middle">이익률 72%</text>
-<path d="M584.5,340.0 v-213.8571428571428 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v213.8571428571428 z" fill="#2a78d6" opacity="0.5"/>
-<path d="M584.5,340.0 v-213.8571428571428 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v213.8571428571428 z" fill="none" stroke="#2a78d6" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="612.5" y="115.1" font-size="11" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">84.6</text>
+<path d="M584.5,340.0 v-213.8571428571428 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v213.8571428571428 z" fill="#3987e5" opacity="0.5"/>
+<path d="M584.5,340.0 v-213.8571428571428 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v213.8571428571428 z" fill="none" stroke="#3987e5" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="612.5" y="115.1" font-size="11" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">84.6</text>
 <path d="M642.5,340.0 v-162.86930091185408 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v162.86930091185408 z" fill="#008300" opacity="0.5"/>
 <path d="M642.5,340.0 v-162.86930091185408 a4,4 0 0 1 4,-4 h48 a4,4 0 0 1 4,4 v162.86930091185408 z" fill="none" stroke="#008300" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="670.5" y="166.1" font-size="11" font-weight="600" fill="#52514e" text-anchor="middle" style="font-variant-numeric:tabular-nums">64.8</text>
-<text x="641.5" y="362" font-size="12" fill="#0b0b0b" text-anchor="middle">26.2Q(E)</text>
+<text x="670.5" y="166.1" font-size="11" font-weight="600" fill="#c3c2b7" text-anchor="middle" style="font-variant-numeric:tabular-nums">64.8</text>
+<text x="641.5" y="362" font-size="12" fill="#ffffff" text-anchor="middle">26.2Q(E)</text>
 <text x="641.5" y="380" font-size="11" fill="#898781" text-anchor="middle">이익률 77%</text>
-<line x1="64" y1="340" x2="724" y2="340" stroke="#c3c2b7" stroke-width="1"/>
-<rect x="494" y="60" width="12" height="12" rx="3" fill="#2a78d6"/>
-<text x="512" y="70" font-size="11" fill="#52514e">매출(조 원)</text>
+<line x1="64" y1="340" x2="724" y2="340" stroke="#383835" stroke-width="1"/>
+<rect x="494" y="60" width="12" height="12" rx="3" fill="#3987e5"/>
+<text x="512" y="70" font-size="11" fill="#c3c2b7">매출(조 원)</text>
 <rect x="586" y="60" width="12" height="12" rx="3" fill="#008300"/>
-<text x="604" y="70" font-size="11" fill="#52514e">영업이익 · 점선=전망</text>
+<text x="604" y="70" font-size="11" fill="#c3c2b7">영업이익 · 점선=전망</text>
 <text x="24" y="406" font-size="10.5" fill="#898781">출처: SK하이닉스 실적 발표(25.3Q~26.1Q)·중부매일(26.2Q 컨센서스)</text>
 </svg></div>
 <p>세 분기 연속 사상 최대 실적 경신 중이며 기울기가 가팔라지고 있습니다. 25.3Q → 26.1Q 사이 매출은 2.2배, 영업이익은 3.3배로 늘었고 영업이익률은 47% → 72%로 확대됐습니다. HBM·고용량 서버 D램·eSSD 등 고부가 제품 믹스가 이익률 개선을 견인했습니다.</p>
@@ -310,43 +370,43 @@ footer {
 <section>
 <h2><span class="no">05</span>산업 동향 — HBM 경쟁 구도</h2>
 <div class="chart"><svg xmlns="http://www.w3.org/2000/svg" width="760" height="338" viewBox="0 0 760 338" font-family='system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif'>
-<rect width="760" height="338" fill="#fcfcfb" stroke="rgba(11,11,11,0.10)"/>
-<text x="24" y="34" font-size="17" font-weight="700" fill="#0b0b0b">글로벌 HBM 시장 점유율 추이</text>
-<text x="24" y="54" font-size="12" fill="#52514e">매출 기준, %. 26년(E)는 카운터포인트 연간 전망.</text>
-<rect x="110" y="78" width="12" height="12" rx="3" fill="#2a78d6"/>
-<text x="128" y="88" font-size="11.5" fill="#52514e">SK하이닉스</text>
+<rect width="760" height="338" fill="#1a1a19" stroke="rgba(11,11,11,0.10)"/>
+<text x="24" y="34" font-size="17" font-weight="700" fill="#ffffff">글로벌 HBM 시장 점유율 추이</text>
+<text x="24" y="54" font-size="12" fill="#c3c2b7">매출 기준, %. 26년(E)는 카운터포인트 연간 전망.</text>
+<rect x="110" y="78" width="12" height="12" rx="3" fill="#3987e5"/>
+<text x="128" y="88" font-size="11.5" fill="#c3c2b7">SK하이닉스</text>
 <rect x="212" y="78" width="12" height="12" rx="3" fill="#008300"/>
-<text x="230" y="88" font-size="11.5" fill="#52514e">삼성전자</text>
-<rect x="290" y="78" width="12" height="12" rx="3" fill="#e87ba4"/>
-<text x="308" y="88" font-size="11.5" fill="#52514e">마이크론</text>
-<text x="100" y="127.0" font-size="12" fill="#0b0b0b" text-anchor="end">25.1Q</text>
-<rect x="111.0" y="108" width="421.7" height="30" rx="3" fill="#2a78d6"/>
+<text x="230" y="88" font-size="11.5" fill="#c3c2b7">삼성전자</text>
+<rect x="290" y="78" width="12" height="12" rx="3" fill="#d55181"/>
+<text x="308" y="88" font-size="11.5" fill="#c3c2b7">마이크론</text>
+<text x="100" y="127.0" font-size="12" fill="#ffffff" text-anchor="end">25.1Q</text>
+<rect x="111.0" y="108" width="421.7" height="30" rx="3" fill="#3987e5"/>
 <text x="321.8" y="127.0" font-size="11.5" font-weight="600" fill="#ffffff" text-anchor="middle">69%</text>
 <rect x="534.7" y="108" width="77.8" height="30" rx="3" fill="#008300"/>
 <text x="573.6" y="127.0" font-size="11.5" font-weight="600" fill="#ffffff" text-anchor="middle">13%</text>
-<rect x="614.5" y="108" width="108.5" height="30" rx="3" fill="#e87ba4"/>
-<text x="668.7" y="127.0" font-size="11.5" font-weight="600" fill="#0b0b0b" text-anchor="middle">18%</text>
-<text x="100" y="171.0" font-size="12" fill="#0b0b0b" text-anchor="end">25.4Q</text>
-<rect x="111.0" y="152" width="348.0" height="30" rx="3" fill="#2a78d6"/>
+<rect x="614.5" y="108" width="108.5" height="30" rx="3" fill="#d55181"/>
+<text x="668.7" y="127.0" font-size="11.5" font-weight="600" fill="#ffffff" text-anchor="middle">18%</text>
+<text x="100" y="171.0" font-size="12" fill="#ffffff" text-anchor="end">25.4Q</text>
+<rect x="111.0" y="152" width="348.0" height="30" rx="3" fill="#3987e5"/>
 <text x="285.0" y="171.0" font-size="11.5" font-weight="600" fill="#ffffff" text-anchor="middle">57%</text>
 <rect x="461.0" y="152" width="133.1" height="30" rx="3" fill="#008300"/>
 <text x="527.5" y="171.0" font-size="11.5" font-weight="600" fill="#ffffff" text-anchor="middle">22%</text>
-<rect x="596.1" y="152" width="126.9" height="30" rx="3" fill="#e87ba4"/>
-<text x="659.5" y="171.0" font-size="11.5" font-weight="600" fill="#0b0b0b" text-anchor="middle">21%</text>
-<text x="100" y="215.0" font-size="12" fill="#0b0b0b" text-anchor="end">26.1Q</text>
-<rect x="111.0" y="196" width="354.1" height="30" rx="3" fill="#2a78d6"/>
+<rect x="596.1" y="152" width="126.9" height="30" rx="3" fill="#d55181"/>
+<text x="659.5" y="171.0" font-size="11.5" font-weight="600" fill="#ffffff" text-anchor="middle">21%</text>
+<text x="100" y="215.0" font-size="12" fill="#ffffff" text-anchor="end">26.1Q</text>
+<rect x="111.0" y="196" width="354.1" height="30" rx="3" fill="#3987e5"/>
 <text x="288.1" y="215.0" font-size="11.5" font-weight="600" fill="#ffffff" text-anchor="middle">58%</text>
 <rect x="467.1" y="196" width="126.9" height="30" rx="3" fill="#008300"/>
 <text x="530.6" y="215.0" font-size="11.5" font-weight="600" fill="#ffffff" text-anchor="middle">21%</text>
-<rect x="596.1" y="196" width="126.9" height="30" rx="3" fill="#e87ba4"/>
-<text x="659.5" y="215.0" font-size="11.5" font-weight="600" fill="#0b0b0b" text-anchor="middle">21%</text>
-<text x="100" y="259.0" font-size="12" fill="#0b0b0b" text-anchor="end">26년(E)</text>
-<rect x="111.0" y="240" width="305.0" height="30" rx="3" fill="#2a78d6"/>
+<rect x="596.1" y="196" width="126.9" height="30" rx="3" fill="#d55181"/>
+<text x="659.5" y="215.0" font-size="11.5" font-weight="600" fill="#ffffff" text-anchor="middle">21%</text>
+<text x="100" y="259.0" font-size="12" fill="#ffffff" text-anchor="end">26년(E)</text>
+<rect x="111.0" y="240" width="305.0" height="30" rx="3" fill="#3987e5"/>
 <text x="263.5" y="259.0" font-size="11.5" font-weight="600" fill="#ffffff" text-anchor="middle">50%</text>
 <rect x="418.0" y="240" width="169.9" height="30" rx="3" fill="#008300"/>
 <text x="503.0" y="259.0" font-size="11.5" font-weight="600" fill="#ffffff" text-anchor="middle">28%</text>
-<rect x="589.9" y="240" width="133.1" height="30" rx="3" fill="#e87ba4"/>
-<text x="656.5" y="259.0" font-size="11.5" font-weight="600" fill="#0b0b0b" text-anchor="middle">22%</text>
+<rect x="589.9" y="240" width="133.1" height="30" rx="3" fill="#d55181"/>
+<text x="656.5" y="259.0" font-size="11.5" font-weight="600" fill="#ffffff" text-anchor="middle">22%</text>
 <text x="24" y="324" font-size="10.5" fill="#898781">출처: 카운터포인트리서치·포쓰저널 (2026-07 조사)</text>
 </svg></div>
 <ul>
@@ -360,33 +420,33 @@ footer {
 <section>
 <h2><span class="no">06</span>밸류에이션 — 증권사 목표주가</h2>
 <div class="chart"><svg xmlns="http://www.w3.org/2000/svg" width="760" height="424" viewBox="0 0 760 424" font-family='system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif'>
-<rect width="760" height="424" fill="#fcfcfb" stroke="rgba(11,11,11,0.10)"/>
-<text x="24" y="34" font-size="17" font-weight="700" fill="#0b0b0b">증권사 목표주가 vs 현재가</text>
-<text x="24" y="54" font-size="12" fill="#52514e">2026년 7월 제시 기준, 원.</text>
-<text x="120" y="101.0" font-size="12" fill="#0b0b0b" text-anchor="end">KB증권</text>
-<path d="M130,84 h499.7735849056603 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-499.7735849056603 z" fill="#2a78d6" opacity="1.0"/>
-<text x="641.8" y="101.0" font-size="11.5" font-weight="600" fill="#52514e" style="font-variant-numeric:tabular-nums">420만</text>
-<text x="120" y="139.0" font-size="12" fill="#0b0b0b" text-anchor="end">NH투자증권</text>
-<path d="M130,122 h487.77897574123995 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-487.77897574123995 z" fill="#2a78d6" opacity="1.0"/>
-<text x="629.8" y="139.0" font-size="11.5" font-weight="600" fill="#52514e" style="font-variant-numeric:tabular-nums">410만</text>
-<text x="120" y="177.0" font-size="12" fill="#0b0b0b" text-anchor="end">IBK투자증권</text>
-<path d="M130,160 h475.78436657681937 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-475.78436657681937 z" fill="#2a78d6" opacity="1.0"/>
-<text x="617.8" y="177.0" font-size="11.5" font-weight="600" fill="#52514e" style="font-variant-numeric:tabular-nums">400만</text>
-<text x="120" y="215.0" font-size="12" fill="#0b0b0b" text-anchor="end">교보증권</text>
-<path d="M130,198 h475.78436657681937 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-475.78436657681937 z" fill="#2a78d6" opacity="1.0"/>
-<text x="617.8" y="215.0" font-size="11.5" font-weight="600" fill="#52514e" style="font-variant-numeric:tabular-nums">400만</text>
-<text x="120" y="253.0" font-size="12" fill="#0b0b0b" text-anchor="end">신한투자증권</text>
-<path d="M130,236 h451.79514824797843 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-451.79514824797843 z" fill="#2a78d6" opacity="1.0"/>
-<text x="593.8" y="253.0" font-size="11.5" font-weight="600" fill="#52514e" style="font-variant-numeric:tabular-nums">380만</text>
-<text x="120" y="291.0" font-size="12" fill="#0b0b0b" text-anchor="end">한국투자증권</text>
-<path d="M130,274 h451.79514824797843 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-451.79514824797843 z" fill="#2a78d6" opacity="1.0"/>
-<text x="593.8" y="291.0" font-size="11.5" font-weight="600" fill="#52514e" style="font-variant-numeric:tabular-nums">380만</text>
-<text x="120" y="329.0" font-size="12" fill="#0b0b0b" text-anchor="end">BNK투자증권</text>
-<path d="M130,312 h217.90026954177898 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-217.90026954177898 z" fill="#2a78d6" opacity="1.0"/>
-<text x="359.9" y="329.0" font-size="11.5" font-weight="600" fill="#52514e" style="font-variant-numeric:tabular-nums">185만 (보유)</text>
-<line x1="130" y1="78" x2="130" y2="348" stroke="#c3c2b7" stroke-width="1"/>
-<line x1="359.5" y1="78" x2="359.5" y2="348" stroke="#0b0b0b" stroke-width="1.5" stroke-dasharray="4 3"/>
-<text x="359.5" y="366" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="middle">현재가 191만</text>
+<rect width="760" height="424" fill="#1a1a19" stroke="rgba(11,11,11,0.10)"/>
+<text x="24" y="34" font-size="17" font-weight="700" fill="#ffffff">증권사 목표주가 vs 현재가</text>
+<text x="24" y="54" font-size="12" fill="#c3c2b7">2026년 7월 제시 기준, 원.</text>
+<text x="120" y="101.0" font-size="12" fill="#ffffff" text-anchor="end">KB증권</text>
+<path d="M130,84 h499.7735849056603 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-499.7735849056603 z" fill="#3987e5" opacity="1.0"/>
+<text x="641.8" y="101.0" font-size="11.5" font-weight="600" fill="#c3c2b7" style="font-variant-numeric:tabular-nums">420만</text>
+<text x="120" y="139.0" font-size="12" fill="#ffffff" text-anchor="end">NH투자증권</text>
+<path d="M130,122 h487.77897574123995 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-487.77897574123995 z" fill="#3987e5" opacity="1.0"/>
+<text x="629.8" y="139.0" font-size="11.5" font-weight="600" fill="#c3c2b7" style="font-variant-numeric:tabular-nums">410만</text>
+<text x="120" y="177.0" font-size="12" fill="#ffffff" text-anchor="end">IBK투자증권</text>
+<path d="M130,160 h475.78436657681937 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-475.78436657681937 z" fill="#3987e5" opacity="1.0"/>
+<text x="617.8" y="177.0" font-size="11.5" font-weight="600" fill="#c3c2b7" style="font-variant-numeric:tabular-nums">400만</text>
+<text x="120" y="215.0" font-size="12" fill="#ffffff" text-anchor="end">교보증권</text>
+<path d="M130,198 h475.78436657681937 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-475.78436657681937 z" fill="#3987e5" opacity="1.0"/>
+<text x="617.8" y="215.0" font-size="11.5" font-weight="600" fill="#c3c2b7" style="font-variant-numeric:tabular-nums">400만</text>
+<text x="120" y="253.0" font-size="12" fill="#ffffff" text-anchor="end">신한투자증권</text>
+<path d="M130,236 h451.79514824797843 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-451.79514824797843 z" fill="#3987e5" opacity="1.0"/>
+<text x="593.8" y="253.0" font-size="11.5" font-weight="600" fill="#c3c2b7" style="font-variant-numeric:tabular-nums">380만</text>
+<text x="120" y="291.0" font-size="12" fill="#ffffff" text-anchor="end">한국투자증권</text>
+<path d="M130,274 h451.79514824797843 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-451.79514824797843 z" fill="#3987e5" opacity="1.0"/>
+<text x="593.8" y="291.0" font-size="11.5" font-weight="600" fill="#c3c2b7" style="font-variant-numeric:tabular-nums">380만</text>
+<text x="120" y="329.0" font-size="12" fill="#ffffff" text-anchor="end">BNK투자증권</text>
+<path d="M130,312 h217.90026954177898 a4,4 0 0 1 4,4 v18 a4,4 0 0 1 -4,4 h-217.90026954177898 z" fill="#3987e5" opacity="1.0"/>
+<text x="359.9" y="329.0" font-size="11.5" font-weight="600" fill="#c3c2b7" style="font-variant-numeric:tabular-nums">185만 (보유)</text>
+<line x1="130" y1="78" x2="130" y2="348" stroke="#383835" stroke-width="1"/>
+<line x1="359.5" y1="78" x2="359.5" y2="348" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="359.5" y="366" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">현재가 191만</text>
 <line x1="510.9" y1="78" x2="510.9" y2="348" stroke="#898781" stroke-width="1.5" stroke-dasharray="4 3"/>
 <text x="510.9" y="366" font-size="11" font-weight="600" fill="#898781" text-anchor="middle">컨센서스 318만</text>
 <text x="24" y="410" font-size="10.5" fill="#898781">출처: 뉴스핌(KB)·다음뉴스(NH/IBK/교보/신한/한투)·인베스트조선(BNK)·Investing.com(컨센서스)</text>
