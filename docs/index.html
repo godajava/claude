@@ -1,4 +1,4 @@
-<title>SK하이닉스 투자 리포트</title>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"></head><body><title>SK하이닉스 투자 리포트</title>
 <style>
 /* 다크 전용 테마 (사용자 지정) — 아티팩트 테마 토글과 무관하게 다크 유지 */
 :root {
@@ -184,6 +184,21 @@ button.refresh:focus-visible { outline: 2px solid var(--accent); outline-offset:
   <span class="note">리포트는 매일 09:00 KST 자동 갱신 · 새로고침은 최신 발행본을 다시 불러옵니다</span>
 </div>
 
+<section>
+<h2><span class="no">LIVE</span>실시간 시세 <small style="font-size:12px;font-weight:500;color:var(--muted)">TradingView 제공 · 거래소 정책에 따라 수분 지연될 수 있음</small></h2>
+<div class="tradingview-widget-container" style="margin-bottom:14px">
+  <div class="tradingview-widget-container__widget"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-info.js" async>
+  {"symbol":"KRX:000660","width":"100%","locale":"kr","colorTheme":"dark","isTransparent":true}
+  </script>
+</div>
+<div class="tradingview-widget-container" style="height:460px">
+  <div class="tradingview-widget-container__widget" style="height:100%"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+  {"symbol":"KRX:000660","interval":"5","timezone":"Asia/Seoul","theme":"dark","style":"1","locale":"kr","allow_symbol_change":false,"hide_top_toolbar":false,"save_image":false,"width":"100%","height":460}
+  </script>
+</div>
+</section>
 
 
 <section>
@@ -488,3 +503,4 @@ button.refresh:focus-visible { outline: 2px solid var(--accent); outline-offset:
 </footer>
 
 </div></div>
+</body></html>
