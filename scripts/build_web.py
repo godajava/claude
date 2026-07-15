@@ -23,8 +23,6 @@ MARKERS = {
 
 # 기술 차트 (tech_charts.py 생성, docs/charts/에 커밋·배포됨)
 TECH_CHARTS = ["candle_volume", "macd", "kdj", "adx_atr", "atr"]
-</section>
-"""
 
 
 def build(date):
@@ -60,7 +58,7 @@ def build(date):
         "<meta name=\"robots\" content=\"noindex\">"
         "</head><body>" + pages + "</body></html>"
     )
-    print(f"생성: docs/index.html ({len(pages):,} bytes, 위젯 포함)")
+    print(f"생성: docs/index.html ({len(pages):,} bytes, 기술차트 img 참조)")
 
 
 if __name__ == "__main__":
