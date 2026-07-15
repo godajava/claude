@@ -22,7 +22,10 @@ SK하이닉스(KRX: 000660)의 주가·뉴스·산업 동향을 조사해 차트
    price_trend / target_prices / quarterly_earnings / hbm_share 4개 SVG가 생성됩니다. 확보 못 한 데이터의 차트는 data.json에서 해당 키를 빼면 생성이 생략됩니다.
 8. `reports/sk-hynix/`의 가장 최근 리포트를 읽어 직전 대비 변화(투자 판단 변경 포함)를 파악합니다.
 9. 아래 형식으로 리포트를 작성해 `reports/sk-hynix/YYYY-MM-DD.md`로 저장합니다.
-10. 저장 경로와 핵심 요약(뉴스 Top 5, 투자 판단 포함)을 사용자에게 보고합니다.
+10. **웹 발행(Artifact)** — `reports/sk-hynix/latest.html`을 오늘 리포트 내용으로 갱신합니다 (기존 파일의 구조·CSS는 유지하고 텍스트와 인라인 SVG만 교체. SVG 교체는 `python3`으로 당일 assets의 SVG 파일 내용을 치환). 갱신 후 Artifact 도구로 **같은 파일 경로**를 재발행하면 고정 URL이 유지됩니다.
+    - 고정 URL: https://claude.ai/code/artifact/e9f34125-bb5e-4888-8185-3fc8e3d343fa (다른 세션에서 발행할 때는 이 URL을 Artifact의 `url` 파라미터로 전달)
+    - favicon은 📊로 고정, label은 당일 날짜(YYYY-MM-DD)로 지정합니다.
+11. 저장 경로, 아티팩트 URL, 핵심 요약(뉴스 Top 5, 투자 판단 포함)을 사용자에게 보고합니다.
 
 ## 리포트 형식 (애널리스트 스타일)
 
