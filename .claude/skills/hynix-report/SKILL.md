@@ -16,12 +16,13 @@ SK하이닉스(KRX: 000660)의 주가·뉴스·산업 동향을 조사해 차트
 5. **실적** — 최근 3~4개 분기 확정 실적(매출·영업이익·이익률)과 다음 분기 컨센서스를 확인합니다.
 6. **산업 동향** — DRAM/NAND/HBM 가격 추이, HBM 점유율(SK하이닉스·삼성전자·마이크론), 차세대 제품(HBM4 등) 일정을 조사합니다.
 7. **증권사 의견** — WebSearch("SK하이닉스 목표주가")로 최근 증권사별 투자의견·목표주가와 컨센서스를 수집합니다.
-8. **차트 생성** — 조사한 수치로 `reports/sk-hynix/assets/YYYY-MM-DD/data.json`을 작성합니다 (형식은 기존 날짜 폴더의 data.json 참고). `three_month_trend`는 직전 리포트의 data.json에서 앵커 포인트들을 이어받아 최신 종가를 추가하고, 3개월(약 90일)을 넘긴 오래된 앵커는 제거하며 `day` 오프셋을 다시 계산합니다. 그 후 라이트/다크 두 세트를 생성합니다:
+8. **차트 생성** — 조사한 수치로 `reports/sk-hynix/assets/YYYY-MM-DD/data.json`을 작성합니다 (형식은 기존 날짜 폴더의 data.json 참고). 라이트/다크 두 세트를 생성합니다:
    ```
    python3 scripts/hynix_charts.py reports/sk-hynix/assets/YYYY-MM-DD/data.json reports/sk-hynix/assets/YYYY-MM-DD
    python3 scripts/hynix_charts.py reports/sk-hynix/assets/YYYY-MM-DD/data.json reports/sk-hynix/assets/YYYY-MM-DD/dark --dark
    ```
-   price_trend / three_month_trend / target_prices / quarterly_earnings / hbm_share 5개 SVG가 세트별로 생성됩니다. 라이트는 마크다운 리포트용, 다크는 웹 페이지(latest.html)용입니다. 확보 못 한 데이터의 차트는 data.json에서 해당 키를 빼면 생성이 생략됩니다.
+   price_trend / target_prices / quarterly_earnings / hbm_share 4개 SVG가 세트별로 생성됩니다. 라이트는 마크다운 리포트용, 다크는 웹 페이지(latest.html)용입니다. 확보 못 한 데이터의 차트는 data.json에서 해당 키를 빼면 생성이 생략됩니다.
+   (참고: 뉴스 앵커 기반 `three_month_trend`는 2026-07-16에 폐기 — 앵커 사이 선형 보간이 6월 말 고점(~298만) 구간을 누락하는 문제. 3개월 추세는 quote 워크플로의 야후 실데이터 일봉 캔들차트(`docs/charts/candle_volume.svg`)가 담당합니다.)
 9. `reports/sk-hynix/`의 가장 최근 리포트를 읽어 직전 대비 변화(투자 판단 변경 포함)를 파악합니다.
 10. 아래 형식으로 리포트를 작성해 `reports/sk-hynix/YYYY-MM-DD.md`로 저장합니다.
 11. **웹 페이지 빌드·발행** — `scripts/report_template.html`을 오늘 리포트 내용으로 갱신한 뒤(구조·CSS·다크 테마·툴바·`__차트마커__`는 유지, 텍스트만 교체) 빌드합니다:
