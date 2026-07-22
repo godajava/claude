@@ -2,9 +2,6 @@
 
 일정·할 일·메모를 관리하고 아침 브리핑을 생성하는 한국어 개인 비서 에이전트입니다.
 
-> 📈 주식투자(SK하이닉스) 리포트 에이전트는 별도 저장소로 분리되었습니다 →
-> [`godajava/sk-hynix-investment-report`](https://github.com/godajava/sk-hynix-investment-report)
-
 ## 구성
 
 | 경로 | 설명 |
